@@ -1,0 +1,69 @@
+# ^^^^^^^^^^^^^^^^^^^^^^
+# Flask
+# Also requires: None
+# ^^^^^^^^^^^^^^^^^^^^^^
+Flask==0.11.1
+click==6.6
+itsdangerous==0.24
+Jinja2==2.8
+Werkzeug==0.11.11
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# FLASK MARSHMALLOW
+# Also requires: Flask
+# ^^^^^^^^^^^^^^^^^^^^^^
+flask-marshmallow==0.7.0
+six==1.10.0
+marshmallow==2.10.3
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# FLASK MIGRATE
+# Also requires: Flask, Flask-SQLAlchemy
+# ^^^^^^^^^^^^^^^^^^^^^^
+Flask-Migrate==2.0.0
+Flask-Script==2.0.5
+alembic==0.8.8
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# FLASK RESTFUL
+# Also requires: Flask, six
+# ^^^^^^^^^^^^^^^^^^^^^^
+Flask-RESTful==0.3.5
+aniso8601==1.1.0
+pytz==2016.7
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# FLASK SQLALCHEMY
+# Also requires: Flask
+# ^^^^^^^^^^^^^^^^^^^^^^
+Flask-SQLAlchemy==2.1
+SQLAlchemy==1.1.2
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# PANDAS
+# Also requires: pytz
+# ^^^^^^^^^^^^^^^^^^^^^^
+pandas==0.19.0
+numpy==1.11.2
+python-dateutil==2.5.3
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# STANDALONE
+# ^^^^^^^^^^^^^^^^^^^^^^
+psycopg2==2.6.2
+requests==2.11.1
+xmltodict==0.10.2
+
+# ^^^^^^^^^^^^^^^^^^^^^^
+# MISC
+# ^^^^^^^^^^^^^^^^^^^^^^
+backports-abc==0.4
+entrypoints==0.2.2
+jsonschema==2.5.1
+Mako==1.0.4
+MarkupSafe==0.23
+mistune==0.7.3
+python-editor==1.0.1
+pyzmq==16.0.0
+wcwidth==0.1.7
+widgetsnbextension==1.2.6
