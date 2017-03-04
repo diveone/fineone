@@ -18,11 +18,11 @@ LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 LOGGING_LOCATION = 'finone.log'
 LOGGING_LEVEL = logging.DEBUG
 
-DB_NAME = os.environ['DB_FINONE']
-DB_USER = os.environ['DB_USER']
-DB_PWD = os.environ['DB_PASSWORD']
-DB_HOST = os.environ['DB_HOST']
-DB_PORT = os.environ['DB_PORT']
+DB_NAME = os.getenv('DB_FINONE', 'finone_dev')
+DB_USER = os.getenv('DB_USER', 'proto')
+DB_PWD = os.getenv('DB_PASSWORD', 'admin')
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '5432')
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DB_USER, DB_PWD, DB_HOST, DB_PORT, DB_NAME)
 SQLALCHEMY_TRACK_MODIFICATIONS = True

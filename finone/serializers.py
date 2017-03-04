@@ -2,6 +2,7 @@
 Flask-Marshmallow (with Flask-SQLAlchemy and marshmallow-sqlalchemy)
 https://flask-marshmallow.readthedocs.io/en/latest/
 """
+
 from finone import marshmallow as mm
 from finone.models import RateQuote, Request
 

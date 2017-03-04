@@ -6,6 +6,7 @@ from flask import Flask
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 from finone.models import db
 
 def create_app(db, config_name):
@@ -20,6 +21,7 @@ def create_app(db, config_name):
 
 app = create_app(db, common)
 migrate = Migrate(app, db)
+db = SQLAlchemy(app)
 marshmallow = Marshmallow(app)
 api = Api(app)
 
