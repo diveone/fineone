@@ -6,6 +6,7 @@ AUTH_NAME = app.config['MORTECH_THIRDPARTY_NAME']
 AUTH_ID = app.config['MORTECH_CUSTOMER_ID']
 AUTH_EMAIL = app.config['MORTECH_EMAIL']
 
+
 #: Service request parameters
 class ServiceConstants:
     LICENSEKEY = 'licenseKey'

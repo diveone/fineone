@@ -45,7 +45,7 @@ class TestApiRequest:
     def test_create_request(self, params):
         """Should return request object."""
         api = ApiRequest(params)
-        res = api.create_request()
+        res = api.build_request()
         assert api.loan_amount == 300000
         assert api.state == 'CA'
 

@@ -6,18 +6,6 @@
 # ^^^^^^^^^^^^^^^^^^^^^^
 Flask-DebugToolbar==0.10.0
 
-# FACTORY BOY
-# Also requires:
-# ^^^^^^^^^^^^^^^^^^^^^^
-factory-boy==2.7.0
-fake-factory==0.7.2
-
-# ^^^^^^^^^^^^^^^^^^^^^^
-# IPYTHON
-# Also requires:
-# ^^^^^^^^^^^^^^^^^^^^^^
-ipython==5.1.0
-
 # ^^^^^^^^^^^^^^^^^^^^^^
 # JUPYTER
 # Also rquires:
@@ -29,15 +17,3 @@ jupyter==1.0.0
 # Also requires: ipykernel, nbconvert, jinja2, traitlets
 # ^^^^^^^^^^^^^^^^^^^^^^
 notebook==4.2.3
-
-# ^^^^^^^^^^^^^^^^^^^^^^
-# PYTEST
-# Also requies:
-# ^^^^^^^^^^^^^^^^^^^^^^
-pytest==3.0.3
-
-# ^^^^^^^^^^^^^^^^^^^^^^
-# REQUESTS MOCK
-# Also requires: six, requests
-# ^^^^^^^^^^^^^^^^^^^^^^
-requests-mock==1.1.0

@@ -19,7 +19,7 @@ LOGGING_LOCATION = 'finone.log'
 LOGGING_LEVEL = logging.DEBUG
 
 DB_NAME = os.getenv('DB_FINONE', 'finone_dev')
-DB_USER = os.getenv('DB_USER', 'proto')
+DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PWD = os.getenv('DB_PASSWORD', 'admin')
 DB_HOST = os.getenv('DB_HOST', 'localhost')
 DB_PORT = os.getenv('DB_PORT', '5432')
