@@ -1,11 +1,16 @@
 import os, sys, tempfile
 import requests, requests_mock
 import pytest
+from flask_sqlalchemy import SQLAlchemy
 
+from config import testing
 from finone import app, create_app
-from finone.api import ApiResponse
+from finone.api import ApiRequest, ApiResponse
 from finone.factories import RateQuoteFactory, RequestFactory
-from finone.models import db
+
+
+db = SQLAlchemy()
+
 @pytest.fixture
 def params():
     data = {
@@ -30,22 +35,24 @@ def client():
 
 @pytest.fixture
 def test_app():
-    _app = create_app(db, 'testing')
+    _app = create_app(db, testing)
     _app.testing = True
 
     return _app
 
 
-class TestApi:
+class TestApiRequest:
     def test_create_request(self, params):
         """Should return request object."""
-        api = ApiResponse(params)
-        res = api.create_request()
-        assert 'loanpurpose' in res
+        api = ApiRequest(params)
+        res = api.build_request()
+        assert res.loan_amount == 300000
+        assert res.state == 'CA'
 
+    @pytest.mark.skip()
     @pytest.mark.usefixtures('test_app')
     def test_send_request_success(self, params):
         api = ApiResponse(params)
         res = api.send_request()
-        assert '200' == api.status_code
+        assert '200' == res.status_code
 

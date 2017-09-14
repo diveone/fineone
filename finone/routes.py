@@ -6,22 +6,24 @@ from flask.views import MethodView
 from flask_restful import Resource
 
 from finone import app
-from finone.api import ApiResponse
+from finone.api import ApiRequest
 from finone.serializers import (
     rate_quote_serializer,
     rate_quotes_serializer,
     request_serializer)
+
 
 @app.route('/status')
 def api_status():
     """Sends status update for the service."""
     return "Service is available!"
 
+
 class ApiRequestView(MethodView):
 
     def post(self):
         """Receives rate quote requests and returns response."""
-        response = ApiResponse(request.form)
+        response = ApiRequest(request.form)
         app.logger.info('Rate quote request: %s', request.form)
         return jsonify(response.params)
 

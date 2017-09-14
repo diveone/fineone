@@ -1,1 +1,9 @@
 Generic single-database configuration.
+
+## Set-up
+
+See requirements file. If you encounter `Marshmallow` errors, ensure marshmallow-flask is installed.
+
+`APP_CONFIG_FILE` must be set in your environment variables. It should point to whichever configuration you need (prod, test, dev, etc).
+
+TODO: How to setup app to run in Pycharm? Always configuration errors and envvar issues as though it's loading the app differently

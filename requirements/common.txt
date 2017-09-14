@@ -2,11 +2,7 @@
 # Flask
 # Also requires: None
 # ^^^^^^^^^^^^^^^^^^^^^^
-Flask==0.11.1
-click==6.6
-itsdangerous==0.24
-Jinja2==2.8
-Werkzeug==0.11.11
+Flask==0.12
 
 # ^^^^^^^^^^^^^^^^^^^^^^
 # FLASK MARSHMALLOW
@@ -14,7 +10,8 @@ Werkzeug==0.11.11
 # ^^^^^^^^^^^^^^^^^^^^^^
 flask-marshmallow==0.7.0
 six==1.10.0
-marshmallow==2.10.3
+marshmallow==2.13.1
+marshmallow-sqlalchemy==0.12.1
 
 # ^^^^^^^^^^^^^^^^^^^^^^
 # FLASK MIGRATE
@@ -29,8 +26,6 @@ alembic==0.8.8
 # Also requires: Flask, six
 # ^^^^^^^^^^^^^^^^^^^^^^
 Flask-RESTful==0.3.5
-aniso8601==1.1.0
-pytz==2016.7
 
 # ^^^^^^^^^^^^^^^^^^^^^^
 # FLASK SQLALCHEMY
@@ -40,30 +35,21 @@ Flask-SQLAlchemy==2.1
 SQLAlchemy==1.1.2
 
 # ^^^^^^^^^^^^^^^^^^^^^^
-# PANDAS
-# Also requires: pytz
+# TESTING
 # ^^^^^^^^^^^^^^^^^^^^^^
-pandas==0.19.0
-numpy==1.11.2
-python-dateutil==2.5.3
+factory-boy>=2.7.0,<3.0.0
+pytest>=3.0.3,<4.0.0
+requests-mock==1.1.0
 
 # ^^^^^^^^^^^^^^^^^^^^^^
 # STANDALONE
 # ^^^^^^^^^^^^^^^^^^^^^^
 psycopg2==2.6.2
-requests==2.11.1
-xmltodict==0.10.2
+requests>=2.11.1,<3.0.0
+xmltodict>=0.10.2,<1.0.0
+shortuuid>=0.5.0,<1.0.0
 
 # ^^^^^^^^^^^^^^^^^^^^^^
 # MISC
 # ^^^^^^^^^^^^^^^^^^^^^^
-backports-abc==0.4
-entrypoints==0.2.2
-jsonschema==2.5.1
-Mako==1.0.4
-MarkupSafe==0.23
-mistune==0.7.3
-python-editor==1.0.1
-pyzmq==16.0.0
-wcwidth==0.1.7
-widgetsnbextension==1.2.6
+ipython>=6.0.0

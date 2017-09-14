@@ -1,19 +1,70 @@
-# Loan purposes
+from finone import app
+
+#: Auth credentials
+AUTH_LICENSEKEY = app.config['MORTECH_LICENSEKEY']
+AUTH_NAME = app.config['MORTECH_THIRDPARTY_NAME']
+AUTH_ID = app.config['MORTECH_CUSTOMER_ID']
+AUTH_EMAIL = app.config['MORTECH_EMAIL']
+
+
+#: Service request parameters
+class ServiceConstants:
+    LICENSEKEY = 'licenseKey'
+    THIRD_PARTY_NAME = 'thirdPartyName'
+    CUSTOMER_ID = 'customerId'
+    EMAIL_ADDRESS = 'emailAddress'
+    REQUEST_ID = 'request_id'
+    PROPERTY_STATE = 'propertyState'
+    PROPERTY_COUNTY = 'propertyCounty'
+    LOAN_AMOUNT = 'loan_amount'
+    PROPERTY_TYPE = 'propertyType'
+    LOAN_PURPOSE = 'loanpurpose'
+    APPRAISED_VALUE = 'appraisedvalue'
+    TARGET_PRICE = 'targetPrice'
+    LOCKIN_DAYS = 'lockindays'
+    LOAN_PRODUCT1 = 'loanProduct1'
+    LOAN_PRODUCT2 = 'loanProduct2'
+    LOAN_PRODUCT3 = 'loanProduct3'
+    LOAN_PRODUCT4 = 'loanProduct4'
+    LOAN_PRODUCT5 = 'loanProduct5'
+
+
+#: Service request default values
+DEFAULT_LOCKIN = '45'
+DEFAULT_TARGET_PRICE = '-999'
+
+PRODUCT_FIXED = 'Fixed'
+PRODUCT_ARM = 'Variable'
+
+PRODUCT_30_FIXED = '30 year fixed'
+PRODUCT_15_FIXED = '15 year fixed'
+PRODUCT_5_ARM = '5 year ARM/30 yrs'
+PRODUCT_7_ARM = '7 year ARM/30 yrs'
+
+#: Loan purpose values for service requests
 LOAN_PURPOSE_PURCHASE = 0
 LOAN_PURPOSE_RATE_AND_TERM = 1  # Refi
 LOAN_PURPOSE_CASHOUT = 2        # Refi
 LOAN_PURPOSE_HOME_EQUITY = 3    # Refi
 LOAN_PURPOSE_HELOC = 4          # Refi
 
+#: Loan purpose types
+PURCHASE = 'purchase'
+REFINANCE = 'refinance'
+CASHOUT = 'cashout'
+HOME_EQUITY = 'home_equity'
+HELOC = 'heloc'
+
+#: Map of loan purpose types to loan purpose service values
 LOAN_PURPOSE_MAP = {
-	'purchase': LOAN_PURPOSE_PURCHASE,
-	'refinance': LOAN_PURPOSE_RATE_AND_TERM,
-	'cashout': LOAN_PURPOSE_CASHOUT,
-	'home_equity': LOAN_PURPOSE_HOME_EQUITY,
-	'heloc': LOAN_PURPOSE_HELOC
+	PURCHASE: LOAN_PURPOSE_PURCHASE,
+	REFINANCE: LOAN_PURPOSE_RATE_AND_TERM,
+	CASHOUT: LOAN_PURPOSE_CASHOUT,
+	HOME_EQUITY: LOAN_PURPOSE_HOME_EQUITY,
+	HELOC: LOAN_PURPOSE_HELOC
 }
 
-# Property types
+#: Property type values for service requests
 PROPERTY_TYPE_ATTACHED = 0
 PROPERTY_TYPE_DETACHED = 1
 PROPERTY_TYPE_COOPS = 2

@@ -1,18 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
 import shortuuid
 
-from sqlalchemy.exc import ProgrammingError
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import relationship
 from sqlalchemy import (
-    Column, DateTime, func, Integer,  String, Text,
-    ForeignKey, create_engine)
+    DateTime, func)
 from sqlalchemy.types import CHAR, DECIMAL
-from sqlalchemy.dialects.postgresql import JSON, UUID
+from sqlalchemy.dialects.postgresql import JSON
 
 db = SQLAlchemy()
 
 
+# Rename: Lender
 class RateQuote(db.Model):
     __tablename__ = 'rate_quotes'
 
@@ -29,12 +27,12 @@ class RateQuote(db.Model):
     expiration = db.Column(DateTime)
 
     lender = db.Column(db.String)
-    product_type = db.Column(db.String)  # FHA, Govt, VA, Non-Conforming, Jumbo
-    product_name = db.Column(db.String)  # Vendor's name for the product
-    description = db.Column(db.String)  # 30 Fixed, 15 ARM, etc
-    product_id = db.Column(db.Integer)  # Mortech product ID
+    product_type = db.Column(db.String)     # FHA, Govt, VA, Non-Conforming, Jumbo
+    product_name = db.Column(db.String)     # Vendor's name for the product
+    description = db.Column(db.String)      # 30 Fixed, 15 ARM, etc
+    product_id = db.Column(db.Integer)      # Mortech product ID
 
-    lock_term = db.Column(db.String)  # Lock in days. Default expiration
+    lock_term = db.Column(db.String)        # Lock in days. Default expiration
     term = db.Column(db.String)
     amortization = db.Column(db.String)
     initial_arm = db.Column(db.String)
@@ -60,6 +58,7 @@ class RateQuote(db.Model):
             setattr(self, attr, val)
 
 
+# Rename: RateQuoteRequest
 class Request(db.Model):
     """
     Request:
@@ -69,7 +68,10 @@ class Request(db.Model):
     Request is also keyed to the customer profile when
     available.
     """
-    LOAN_PURPOSE_OPTIONS = [('purchase', 'Purchase'), ('refi', 'Refinance')]
+    LOAN_PURPOSE_OPTIONS = [('purchase', 'Purchase'),
+                            ('refi', 'Refinance'),
+                            ('cashout', 'Cashout Refinance'),
+                            ('both', 'Both')]
 
     __tablename__ = 'requests'
 
@@ -77,7 +79,7 @@ class Request(db.Model):
     uuid = db.Column(CHAR(22))
     customer_id = db.Column(db.Integer)
 
-    # Parameters sent to generate rate quote results
+    # Required parameters sent to generate rate quote results
     property_state = db.Column(db.String)
     property_county = db.Column(db.String)
     property_zipcode = db.Column(db.String)
@@ -87,6 +89,19 @@ class Request(db.Model):
 
     # Relationships: one to many
     quotes = relationship("RateQuote", back_populates="request")
+
+    # User profile fields
+    term = db.Column(db.String)
+    amortization = db.Column(db.String)
+    occupancy = db.Column(db.String)
+    property_type = db.Column(db.String)
+    credit_score = db.Column(db.String)
+    is_veteran = db.Column(db.Boolean)
+    motive = db.Column(db.Boolean)          # First time, selling, invest
+    loan_timing = db.Column(db.Boolean)     # Now, 3 mos, year
+    mortgage_balance = db.Column(DECIMAL(12, 3))
+    mortgage_term = db.Column(db.String)
+    mortgage_rate = db.Column(db.String)
 
     def __init__(self, *args, **attrs):
         self.uuid = shortuuid.uuid()
