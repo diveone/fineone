@@ -33,6 +33,8 @@ class ServiceConstants:
 DEFAULT_LOCKIN = '45'
 DEFAULT_TARGET_PRICE = '-999'
 
+PRODUCT_FIXED = 'Fixed'
+PRODUCT_ARM = 'Variable'
 
 PRODUCT_30_FIXED = '30 year fixed'
 PRODUCT_15_FIXED = '15 year fixed'

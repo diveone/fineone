@@ -1,5 +1,9 @@
-import logging
-import os
+"""
+Finone API Controller
+
+Processes XML response from Mortech, parses, and stores into database.
+Returns response object for user consumption as JSON.
+"""
 import requests
 import xmltodict
 
@@ -9,13 +13,12 @@ from finone import db, app
 from finone.constants import (
     AUTH_EMAIL, AUTH_ID, AUTH_LICENSEKEY, AUTH_NAME,
     PROPERTY_TYPE_MAP, LOAN_PURPOSE_MAP,
+    PRODUCT_FIXED, PRODUCT_ARM,
     PRODUCT_5_ARM, PRODUCT_7_ARM, PRODUCT_15_FIXED, PRODUCT_30_FIXED,
     DEFAULT_TARGET_PRICE, DEFAULT_LOCKIN,
     ServiceConstants as sc)
-from finone.exceptions import RateQuoteAPIException
-from finone.parsers import XmlParser
+from finone.factories import lender_factory, request_factory
 from finone.utils import underscoreize
-from finone.models import Request, RateQuote
 from sqlalchemy.exc import ProgrammingError
 
 
@@ -44,10 +47,10 @@ class ApiRequest(object):
                 self.options.update({key: value})
 
     def _get_property_type(self):
-        return PROPERTY_TYPE_MAP.get(self.property_type)
+        return PROPERTY_TYPE_MAP.get(self.options.get('property_type'))
 
     def _get_loan_purpose(self):
-        return LOAN_PURPOSE_MAP.get(self.loan_purpose)
+        return LOAN_PURPOSE_MAP.get(self.options.get('loan_purpose'))
 
     def build_request(self):
         return {
@@ -78,7 +81,7 @@ class ApiRequest(object):
 
     def send_request(self):
         """Sends a request to mortech with data."""
-        print("Sending request...")
+        app.logger.info("Sending request...")
         # session = self.create_session()
         try:
             data = self.build_request()
@@ -88,25 +91,10 @@ class ApiRequest(object):
             self.status_code = '500'
             raise
         else:
-            print("Request successful: {0}".format(res.status_code))
+            app.logger.info("Request successful: {0}".format(res.status_code))
             self.status_code = res.status_code
-            parser = ApiResponse(res.content, self.request_factory())
+            parser = ApiResponse(res.content, request_factory())
             return parser.get_results()
-
-    def request_factory(self):
-        data = {
-            'property_zipcode': self.zipcode,
-            'property_state': self.state,
-            'property_type': self.property_type,
-            'loan_amount': self.loan_amount,
-            'appraised_value': self.appraised_value,
-            'loan_purpose': self.loan_purpose,
-        }
-
-        req = Request(**data)
-        db.session.add(req)
-        db.session.commit()
-        return req
 
 
 class ApiResponse(object):
@@ -152,8 +140,8 @@ class ApiResponse(object):
         service.logger.info("Result count: %s", count)
         return count
 
-    # TODO: abstract method
-    def _get_fees(self, fee_list):
+    @staticmethod
+    def _get_fees(fee_list):
         """Accepts list and returns dictionary of fees."""
         fees = {}
         for fee in fee_list:
@@ -162,26 +150,26 @@ class ApiResponse(object):
             })
         return fees
 
-    # TODO: abstract method
-    def _get_amortization(self, obj):
+    @staticmethod
+    def _get_amortization(obj):
         """Evaluates presence of intial arm tem to determine amortization."""
         if obj:
-            return "Variable"
+            return PRODUCT_ARM
         else:
-            return "Fixed"
+            return PRODUCT_FIXED
 
     def _get_lenders(self):
         """Return a list of RateQuote instances."""
         lenders = []
         data = self.parse(self.xml)
         results = data['mortech']['results']
-        print(data.get('mortech').keys())
+        app.logger.info(data.get('mortech').keys())
 
         for product in results:
             app.logger.info("==> BEGIN: Processing rate quotes for %s products ...",
-                                product.get('@product_name'))
+                            product.get('@product_name'))
             for lender in product['quote']:
-                lenders.append(self.lender_factory(lender))
+                lenders.append(lender_factory(lender))
             app.logger.info("==> END: Processing for %s", product.get('@product_name'))
         return lenders
 
@@ -193,34 +181,10 @@ class ApiResponse(object):
             db.session.add_all(lenders)
             db.session.commit()
         except (ProgrammingError, Exception) as exc:
-            print("BULK STORE EXCEPTION: {}".format(exc))
+            app.logger.info("BULK STORE EXCEPTION: {}".format(exc))
             raise exc
         else:
             app.logger.info("==> END: %s Lenders saved successfully!", len(lenders))
-
-    def lender_factory(self, lender):
-        """Takes a lender Element and parses the attributes."""
-        print("Lender Factory - Request ID {}".format(self.request.id))
-        data = {
-            'request_id': self.request.id,
-            'lender_name': lender.get('@vendor_name'),
-            'product_description': lender.get('@productDesc'),
-            'term': lender.get('@productTerm'),
-            'amortization': self._get_amortization(lender.get('@initialArmTerm')),
-            'initial_arm': lender.get('@initialArmTerm'),
-            'int_only_months': lender.get('@intOnlyMonths'),
-            'rate': lender.get('quote_detail').get('@rate'),
-            'points': lender.get('quote_detail').get('@price'),
-            'origination_fee': lender.get('quote_detail').get('@originationFee'),
-            'apr': lender.get('quote_detail').get('@apr'),
-            'piti': lender.get('quote_detail').get('@piti'),
-            'loan_amount': lender.get('quote_detail').get('@loanAmount'),
-            'upfront_fee': lender.get('quote_detail').get('@upfrontFee'),
-            'monthly_premium': lender.get('quote_detail').get('@monthlyPremium'),
-            'price': lender.get('ratesheet_price'),
-            'fees': self._get_fees(lender['quote_detail']['fees']['fee_list']['fee'])
-        }
-        return RateQuote(**data)
 
     def save_xml(self):
         """Debug. Stores parsed data to tmp/data."""
@@ -234,6 +198,8 @@ class ApiResponse(object):
 
         return to_list(data['mortech']['results'])
 
+
 def to_list(data):
+    # Move to Utils
     if not isinstance(data, list):
         return [data]

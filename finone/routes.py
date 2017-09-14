@@ -12,10 +12,12 @@ from finone.serializers import (
     rate_quotes_serializer,
     request_serializer)
 
+
 @app.route('/status')
 def api_status():
     """Sends status update for the service."""
     return "Service is available!"
+
 
 class ApiRequestView(MethodView):
 

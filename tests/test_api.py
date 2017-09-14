@@ -46,13 +46,13 @@ class TestApiRequest:
         """Should return request object."""
         api = ApiRequest(params)
         res = api.build_request()
-        assert api.loan_amount == 300000
-        assert api.state == 'CA'
+        assert res.loan_amount == 300000
+        assert res.state == 'CA'
 
     @pytest.mark.skip()
     @pytest.mark.usefixtures('test_app')
     def test_send_request_success(self, params):
         api = ApiResponse(params)
         res = api.send_request()
-        # assert '200' == api.status_code
+        assert '200' == res.status_code
 
